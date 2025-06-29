@@ -233,12 +233,16 @@ export async function POST(request: Request) {
     } else {
       return new Response(stream);
     }
-  } catch (error) {
+    } catch (error) {
     if (error instanceof ChatSDKError) {
       return error.toResponse();
     }
+
+    console.error("Unexpected error in /api/chat:", error);
+    return new Response("Internal Server Error", { status: 500 });
   }
 }
+
 
 export async function GET(request: Request) {
   const streamContext = getStreamContext();
